@@ -2,13 +2,15 @@ import bad_sorts
 import timeit
 import matplotlib.pyplot as plt
 
+import good_sorts
 
-def testSortingAlgorithm(algorithm, highest_list_length, step):
+
+def testSortingAlgorithm(algorithm, highest_list_length, step, rand_list_generator):
     lengths = []
     times = []
 
     for i in range(0, highest_list_length, step):
-        rand_list = bad_sorts.create_random_list(i, i)
+        rand_list = rand_list_generator(i, i)
 
         start = timeit.default_timer()
         algorithm(rand_list)
@@ -21,15 +23,15 @@ def testSortingAlgorithm(algorithm, highest_list_length, step):
     return lengths, times
 
 
-def plotTimingGraph(sorting_algorithms, highest_list_length, step):
-    plt.title("Bad Sort Testing")
+def plotTimingGraph(graph_name, sorting_algorithms, highest_list_length, step, rand_list_generator):
+    plt.title(graph_name)
     plt.xlabel("List Length")
     plt.ylabel("Time (s)")
 
     algorithm_names = []
 
     for algorithm in sorting_algorithms:
-        lengths, times = testSortingAlgorithm(algorithm, highest_list_length, step)
+        lengths, times = testSortingAlgorithm(algorithm, highest_list_length, step, rand_list_generator)
         plt.plot(lengths, times)
         algorithm_names.append(algorithm.__name__)
 
@@ -37,4 +39,5 @@ def plotTimingGraph(sorting_algorithms, highest_list_length, step):
     plt.show()
 
 
-plotTimingGraph([bad_sorts.bubble_sort, bad_sorts.insertion_sort, bad_sorts.selection_sort], 5000, 50)
+#plotTimingGraph("Bad Sort Testing", [bad_sorts.bubble_sort, bad_sorts.insertion_sort, bad_sorts.selection_sort], 5000, 50)
+plotTimingGraph("Good Sort Testing", [good_sorts.heapsort, good_sorts.mergesort, good_sorts.quicksort], 5000, 100, bad_sorts.create_random_list)
