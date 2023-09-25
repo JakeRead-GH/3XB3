@@ -1,9 +1,7 @@
 import bad_sorts
+import good_sorts
 import timeit
 import matplotlib.pyplot as plt
-
-import good_sorts
-
 
 def testSortingAlgorithm(algorithm, highest_list_length, step, runs_per_step, rand_list_generator):
     lengths = []
