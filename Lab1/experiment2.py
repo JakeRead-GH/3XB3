@@ -61,6 +61,6 @@ def find_min_max_index(L, n):
 # print(l1 == l2)
 
 # ******************* Testing *******************
-# testingHelper.plotTimingGraph("Insertion Sort Testing", [bad_sorts.insertion_sort, insertion_sort_variation], 5000, 50, 2, bad_sorts.create_random_list)
-# testingHelper.plotTimingGraph("Bubble Sort Testing", [bad_sorts.bubble_sort, bubble_sort_variation], 2500, 50, 5, bad_sorts.create_random_list)
-# testingHelper.plotTimingGraph("Selection Sort Testing", [bad_sorts.selection_sort, selection_sort_variation], 5000, 100, 5, bad_sorts.create_random_list)
+testingHelper.plotTimingGraph("Insertion Sort Testing", [bad_sorts.insertion_sort, insertion_sort_variation], 5000, 50, 2, bad_sorts.create_random_list)
+testingHelper.plotTimingGraph("Bubble Sort Testing", [bad_sorts.bubble_sort, bubble_sort_variation], 2500, 50, 5, bad_sorts.create_random_list)
+testingHelper.plotTimingGraph("Selection Sort Testing", [bad_sorts.selection_sort, selection_sort_variation], 5000, 100, 5, bad_sorts.create_random_list)
