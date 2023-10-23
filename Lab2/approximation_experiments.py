@@ -1,23 +1,8 @@
 import approximation as ap
 import matplotlib.pyplot as plt
 import graph
-import random
+import graphHelper
 
-def has_edge(G, u, v):
-    return u in G.adj and v in G.adj[u]
-
-def random_graph(nodes, edges):
-    if edges > nodes * (nodes - 1) // 2:
-        edges = nodes * (nodes - 1) // 2
-    G = graph.Graph(nodes)
-    for _ in range(edges):
-        u = random.randint(0, nodes - 1)
-        v = random.randint(0, nodes - 1)
-        while u == v or has_edge(G, u, v):
-            u = random.randint(0, nodes - 1)
-            v = random.randint(0, nodes - 1)
-        G.add_edge(u, v)
-    return G
 
 def testMVCAlgorithm(algorithm, graphs, lengths, per_step):
     sizes = []
@@ -43,7 +28,7 @@ def experiment1():
     lengths = range(1, 75, 1)
     for m in lengths:
         for _ in range(per_step):
-            G = random_graph(12, m)
+            G = graphHelper.random_graph(12, m)
             graphs.append(G)
 
     algorithms = [graph.MVC, ap.approx1, ap.approx2, ap.approx3]
@@ -64,5 +49,6 @@ def experiment1():
 
     plt.legend(algorithm_names)
     plt.show()
+
 
 print(experiment1())
