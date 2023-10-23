@@ -75,16 +75,18 @@ def approx3(G):
         remove_edges(temp_G, edge[1])
     return C
 
-g = graph.Graph(5)
-g.add_edge(0, 1)
-g.add_edge(0, 2)
-g.add_edge(1, 2)
-g.add_edge(1, 3)
-g.add_edge(1, 4)
-g.add_edge(2, 3)
-g.add_edge(3, 4)
 
-print(graph.MVC(g))
-print(approx1(g))
-print(approx2(g))
-print(approx3(g))
+if __name__ == "__main__":
+    g = graph.Graph(5)
+    g.add_edge(0, 1)
+    g.add_edge(0, 2)
+    g.add_edge(1, 2)
+    g.add_edge(1, 3)
+    g.add_edge(1, 4)
+    g.add_edge(2, 3)
+    g.add_edge(3, 4)
+
+    print(graph.MVC(g))
+    print(approx1(g))
+    print(approx2(g))
+    print(approx3(g))
