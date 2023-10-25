@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 def generateRandomKnapsackItems(num_items=10, min_v=0, max_v=10, min_w=1, max_w=10):
     knapsack = []
     for i in range(num_items):
-        knapsack.append((random.randint(min_v, max_v), random.randint(min_w, max_w)))
+        knapsack.append((random.randint(min_w, max_w), random.randint(min_v, max_v)))
 
     return knapsack
 
