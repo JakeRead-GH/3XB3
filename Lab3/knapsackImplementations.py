@@ -14,9 +14,22 @@ def ks_brute_force(items, capacity):
     return max_value
 
 
+def ks_rec_core(items, i, j):
+    if not i or not j:
+        return 0
+    elif j - items[i - 1][0] < 0:
+        return ks_rec_core(items, i - 1, j)
+    else:
+        return max(ks_rec_core(items, i - 1, j), ks_rec_core(items, i - 1, j - items[i - 1][0]) + items[i - 1][1])
+
+
 def ks_rec(items, capacity):
-    a = 0
+    return ks_rec_core(items, len(items), capacity)
 
 
-# print(ks_brute_force(lab3Helper.generateRandomKnapsackItems(num_items=10), 10))
-# lab3Helper.plotTimingGraph("Knapsack Brute Force Test", [ks_brute_force], 20, 20)
+items = lab3Helper.generateRandomKnapsackItems(num_items=10)
+#
+# print(ks_brute_force(items, 10))
+print(ks_rec(items, 20))
+
+lab3Helper.plotTimingGraph("Bad Knapsack Testing", [ks_brute_force, ks_rec], 20, 20)
