@@ -1,4 +1,5 @@
 from collections import deque
+import bfsAndDfs
 
 #Undirected graph using an adjacency list
 class Graph:
@@ -81,7 +82,7 @@ def is_vertex_cover(G, C):
     return True
 
 def MVC(G):
-    nodes = [i for i in range(G.number_of_nodes())]
+    nodes = [i for i in range(G.get_size())]
     subsets = power_set(nodes)
     min_cover = nodes
     for subset in subsets:
@@ -89,3 +90,33 @@ def MVC(G):
             if len(subset) < len(min_cover):
                 min_cover = subset
     return min_cover
+
+#Connected and Cycle Implementations
+def has_cycle(g):
+    S = [0]
+    marked = {}
+
+    for node in g.adj:
+        marked[node] = False
+
+    previous_node = -1
+
+    while len(S) != 0:
+        current_node = S.pop()
+
+        if not marked[current_node]:
+            marked[current_node] = True
+
+            for node in g.adj[current_node]:
+                if not marked[node]:
+                    S.append(node)
+                elif node != previous_node:
+                    return True
+
+        previous_node = current_node
+
+    return False
+
+def is_connected(g):
+    return len(bfsAndDfs.BFS3(g, 0)) == len(g.adj) - 1
+
