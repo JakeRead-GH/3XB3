@@ -76,11 +76,28 @@ def ks_top_down(items, capacity):
     return dp[(len(items), capacity)]
 
 
-items = lab3Helper.generateRandomKnapsackItems(num_items=10)
-print(items)
-print(ks_rec(items, 10))
-print(ks_bottom_up(items, 10))
-print(ks_top_down(items, 10))
+def implementation2Experiments():
+    lab3Helper.plotTimingGraph("Knapsack ks_rec and ks_brute_force runtime vs number of items", [ks_brute_force, ks_rec], 21, 50, 1, 5, 0, 10, 1, 10)
+    lab3Helper.plotTimingGraph("ks_rec and ks_brute_force runtime vs number of items (Large v and w)", [ks_brute_force, ks_rec], 21, 500, 1, 5, 1000, 2000, 50, 75)
 
-# lab3Helper.plotTimingGraph("Bad Knapsack Testing", [ks_brute_force, ks_rec], 20, 20)
-lab3Helper.plotTimingGraph("Good Knapsack Testing", [ks_bottom_up, ks_top_down], 100, 100)
+
+def tdbuExperiment():
+    lab3Helper.plotTimingGraph("ks_bottom_up and ks_top_down runtime vs number of items (A)", [ks_bottom_up, ks_top_down], 100, 100, 1, 100, 0, 10, 1, 10)
+    lab3Helper.plotTimingGraph("ks_bottom_up and ks_top_down runtime vs number of items (B)", [ks_bottom_up, ks_top_down], 100, 10000, 1, 2, 0, 1000, 1, 1000)
+    lab3Helper.plotTimingGraph("ks_bottom_up and ks_top_down runtime vs number of items (C)", [ks_bottom_up, ks_top_down], 100, 10000, 1, 2, 1500, 1600, 1, 100)
+    lab3Helper.plotTimingGraph("ks_bottom_up and ks_top_down runtime vs number of items (D)", [ks_bottom_up, ks_top_down], 100, 10000, 1, 2, 0, 1000, 1, 100)
+
+
+if __name__ == "__main__":
+    # Validation tests
+    items = lab3Helper.generateRandomKnapsackItems(num_items=10)
+    print(items)
+    print(ks_rec(items, 10))
+    print(ks_bottom_up(items, 10))
+    print(ks_top_down(items, 10))
+
+    # Implementation 2 Runtime Experiments
+    implementation2Experiments()
+
+    # Top Down vs Bottom Up Runtime Experiments
+    tdbuExperiment()

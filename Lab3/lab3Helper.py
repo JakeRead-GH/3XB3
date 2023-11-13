@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 def generateRandomKnapsackItems(num_items=10, min_v=0, max_v=10, min_w=1, max_w=10):
     knapsack = []
-    for i in range(num_items):
+    for _ in range(num_items):
         knapsack.append((random.randint(min_w, max_w), random.randint(min_v, max_v)))
 
     return knapsack
@@ -31,7 +31,7 @@ def testKnapsackAlgorithm(algorithm, max_num_items, capacity, step=1, runs_per_s
     for i in range(0, max_num_items, step):
         sub_times = []
 
-        for j in range(runs_per_step):
+        for _ in range(runs_per_step):
             items = generateRandomKnapsackItems(i, min_v, max_v, min_w, max_w)
 
             start = timeit.default_timer()
