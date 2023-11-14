@@ -83,7 +83,7 @@ def implementation2Experiments():
 
 def tdbuExperiment():
     lab3Helper.plotTimingGraph("ks_bottom_up and ks_top_down runtime vs number of items (A)", [ks_bottom_up, ks_top_down], 100, 100, 1, 100, 0, 10, 1, 10)
-    lab3Helper.plotTimingGraph("ks_bottom_up and ks_top_down runtime vs number of items (B)", [ks_bottom_up, ks_top_down], 100, 10000, 1, 2, 0, 1000, 1, 1000)
+    lab3Helper.plotTimingGraph("ks_bottom_up and ks_top_down runtime vs number of items (B)", [ks_bottom_up, ks_top_down], 100, 10000, 1, 2, 0, 10, 1, 1000)
     lab3Helper.plotTimingGraph("ks_bottom_up and ks_top_down runtime vs number of items (C)", [ks_bottom_up, ks_top_down], 100, 10000, 1, 2, 1500, 1600, 1, 100)
     lab3Helper.plotTimingGraph("ks_bottom_up and ks_top_down runtime vs number of items (D)", [ks_bottom_up, ks_top_down], 100, 10000, 1, 2, 0, 1000, 1, 100)
 
