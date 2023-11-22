@@ -1,4 +1,4 @@
-import min_heap2 as min_heap
+import min_heap
 
 
 def dijkstra_approx(g, source, k):
