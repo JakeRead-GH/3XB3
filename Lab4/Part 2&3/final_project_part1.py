@@ -32,7 +32,7 @@ class DirectedWeightedGraph:
         return len(self.adj)
 
 
-def dijkstra(G, source):
+def dijkstra(G, source, d):
     pred = {} #Predecessor dictionary. Isn't returned, but here for your understanding
     dist = {} #Distance dictionary
     Q = min_heap.MinHeap([])
@@ -54,7 +54,9 @@ def dijkstra(G, source):
                 Q.decrease_key(neighbour, dist[current_node] + G.w(current_node, neighbour))
                 dist[neighbour] = dist[current_node] + G.w(current_node, neighbour)
                 pred[neighbour] = current_node
-    return dist
+        if current_node == d:
+            break
+    return pred, dist[d]
 
 
 def bellman_ford(G, source):

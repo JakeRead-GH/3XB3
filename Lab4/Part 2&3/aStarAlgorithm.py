@@ -32,33 +32,34 @@ def a_star(g, s, d, h):
                 pred[neighbour] = current_node
 
                 q.decrease_key(neighbour, dist[neighbour] + h[neighbour])
-
+        if current_node == d:
+            break
     return pred, dist[d]
 
 
-g = final_project_part1.DirectedWeightedGraph()
-g.add_node("a")
-g.add_node("b")
-g.add_node("c")
-g.add_node("cleft1")
-g.add_node("cleft2")
-g.add_node("cright1")
-g.add_node("cright2")
-g.add_node("d")
+# g = final_project_part1.DirectedWeightedGraph()
+# g.add_node("a")
+# g.add_node("b")
+# g.add_node("c")
+# g.add_node("cleft1")
+# g.add_node("cleft2")
+# g.add_node("cright1")
+# g.add_node("cright2")
+# g.add_node("d")
 
-g.add_edge("a", "b", 1)
-g.add_edge("b", "c", 1)
-g.add_edge("c", "cleft1", 1)
-g.add_edge("cleft1", "cleft2", 1)
-g.add_edge("c", "cright1", 1)
-g.add_edge("cright1", "cright2", 1)
-g.add_edge("cright2", "d", 1)
+# g.add_edge("a", "b", 1)
+# g.add_edge("b", "c", 1)
+# g.add_edge("c", "cleft1", 1)
+# g.add_edge("cleft1", "cleft2", 1)
+# g.add_edge("c", "cright1", 1)
+# g.add_edge("cright1", "cright2", 1)
+# g.add_edge("cright2", "d", 1)
 
-h = {"a": 5, "b": 4, "c": 3, "cleft1": 4, "cleft2": 5, "cright1": 2, "cright2": 1, "d": 0}
+# h = {"a": 5, "b": 4, "c": 3, "cleft1": 4, "cleft2": 5, "cright1": 2, "cright2": 1, "d": 0}
 
-pred, dist = a_star(g, "a", "d", h)
+# pred, dist = a_star(g, "a", "b", h)
 
-print(pred)
-print(dist)
+# print(pred)
+# print(dist)
 
 
