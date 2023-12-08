@@ -54,8 +54,11 @@ class LondonSubwayGraph(DirectedWeightedGraph):
                 dist = Station.getDistance(station1, station2)
                 self.add_edge(station1.name, station2.name, dist)
                 self.add_edge(station2.name, station1.name, dist)
-                self.connections[(station1.name, station2.name)] = row[2]
-                self.connections[(station2.name, station1.name)] = row[2]
+                if self.connections.get((station1.name, station2.name)) is None:
+                    self.connections[(station1.name, station2.name)] = []
+                    self.connections[(station2.name, station1.name)] = []
+                self.connections[(station1.name, station2.name)].append(row[2])
+                self.connections[(station2.name, station1.name)].append(row[2])
 
     def generateHeuristicForTarget(self, target):
         h = {}
@@ -110,7 +113,7 @@ def get_all_stations_on_line(graph, source, destination, line):
         dist[current_node] = current_element.key
         # want to only go through the stations on the same line
         for neighbour in graph.adj[current_node]:
-            if (current_node, neighbour) not in graph.connections or graph.connections[(current_node, neighbour)] not in line:
+            if (current_node, neighbour) not in graph.connections or [l for l in graph.connections[(current_node, neighbour)] if l in line] == []:
                 continue
             if dist[current_node] + graph.w(current_node, neighbour) < dist[neighbour]:
                 Q.decrease_key(neighbour, dist[current_node] + graph.w(current_node, neighbour))
@@ -122,8 +125,8 @@ def get_all_stations_on_line(graph, source, destination, line):
                 stations.append(current_node)
             break
 
-    if neighbour not in stations:
-        stations.append(neighbour)
+    # if neighbour not in stations:
+    #     stations.append(neighbour)
 
     return stations
 
@@ -245,20 +248,18 @@ def one_line_experiment(runs_per_step):
     print(f"A* average: {a_star_average*1000}")
 
 def adjacent_lines_experiment(runs_per_step):
-    SOURCE = 'Hatton Cross'
-    LINE_ONE = '10'
-    LINE_TWO = '4'
-    FINAL_DEST_ONE = 'Arsenal'
-    FINAL_DEST_TWO = 'Tower Hill'
+    SOURCE = 'Moorgate'
+    FINAL_DEST = 'Upminster'
     
     graph = LondonSubwayGraph()
 
     dijkstra_runtimes = []
     a_star_runtimes = []
-    dijkstra_runtimes_2 = []
-    a_star_runtimes_2 = []
 
-    stations_range = get_all_stations_on_line(graph, SOURCE, FINAL_DEST_ONE, [LINE_ONE])
+    stations_range = ['Liverpool Street', 'Aldgate East', 'Whitechapel', 'Stepney Green', 'Mile End',
+                      'Bow Church', 'Bromley-By-Bow', 'West Ham', 'Plaistow', 'Upton Park', 'East Ham',
+                      'Barking', 'Upney', 'Becontree', 'Dagenham Heathway', 'Dagenham East', 'Elm Park',
+                      'Hornchurch', 'Upminster Bridge', 'Upminster']
 
     for destination in stations_range:
         print(f"Running Dijkstra experiment for {SOURCE} to {destination}")
@@ -283,63 +284,22 @@ def adjacent_lines_experiment(runs_per_step):
         a_star_runtimes.append(sum(a_star_runtimes_step)/len(a_star_runtimes_step))
 
     # Plot the results
-    plt.plot(dijkstra_runtimes, label='Dijkstra (Line {})'.format(LINE_ONE))
-    plt.plot(a_star_runtimes, label='A* (Line {})'.format(LINE_ONE))
+    plt.plot(dijkstra_runtimes, label='Dijkstra')
+    plt.plot(a_star_runtimes, label='A*')
     plt.xlabel('Destination Station')
     plt.ylabel('Runtime (ms)')
     plt.xticks(range(len(stations_range)), stations_range, rotation=90, fontsize=6)
-    plt.subplots_adjust(bottom=0.15)
+    plt.subplots_adjust(bottom=0.25)
     plt.legend()
-    plt.title('Dijkstra vs A* Runtimes for Adjacent Lines | Starting at \'{}\' and Ending at \'{}\' on Line {}'.format(SOURCE, FINAL_DEST_ONE, LINE_ONE))
-    plt.show()
-
-    dijkstra_average = sum(dijkstra_runtimes)/len(dijkstra_runtimes)
-    a_star_average = sum(a_star_runtimes)/len(a_star_runtimes)
-
-    print(f"Dijkstra average ({LINE_ONE}): {dijkstra_average*1000}")
-    print(f"A* average ({LINE_ONE}): {a_star_average*1000}")
-
-    stations_range = get_all_stations_on_line(graph, SOURCE, FINAL_DEST_TWO, [LINE_ONE, LINE_TWO])
-
-    for destination in stations_range:
-        print(f"Running Dijkstra experiment for {SOURCE} to {destination}")
-        dijkstra_runtimes_step = []
-
-        # Measure Dijkstra's algorithm runtime
-        for _ in range(runs_per_step):
-            dijkstra_time = timeit.timeit(lambda: dijkstra(graph, SOURCE, destination), number=1)
-            dijkstra_runtimes_step.append(dijkstra_time*1000)
-        
-        dijkstra_runtimes_2.append(sum(dijkstra_runtimes_step)/len(dijkstra_runtimes_step))
-
-    for destination in stations_range:
-        print(f"Running A* experiment for {SOURCE} to {destination}")
-        a_star_runtimes_step = []
-
-        # Measure A* algorithm runtime
-        for _ in range(runs_per_step):
-            a_star_time = timeit.timeit(lambda: a_star_subway(graph, SOURCE, destination), number=1)
-            a_star_runtimes_step.append(a_star_time*1000)
-
-        a_star_runtimes_2.append(sum(a_star_runtimes_step)/len(a_star_runtimes_step))
-
-    # Plot the results
-    plt.plot(dijkstra_runtimes_2, label='Dijkstra (Line {})'.format(LINE_TWO))
-    plt.plot(a_star_runtimes_2, label='A* (Line {})'.format(LINE_TWO))
-    plt.xlabel('Destination Station')
-    plt.ylabel('Runtime (ms)')
-    plt.xticks(range(len(stations_range)), stations_range, rotation=90, fontsize=6)
-    plt.subplots_adjust(bottom=0.15)
-    plt.legend()
-    plt.title('Dijkstra vs A* Runtimes for Adjacent Lines | Starting at \'{}\' and Ending at \'{}\' on Line {}'.format(SOURCE, FINAL_DEST_TWO, LINE_TWO))
+    plt.title('Dijkstra vs A* Runtimes for Adjacent Lines | Starting at \'{}\' and Ending at \'{}\''.format(SOURCE, FINAL_DEST))
     plt.show()
 
     # Find which algorithm is faster on average
-    dijkstra_average = sum(dijkstra_runtimes_2)/len(dijkstra_runtimes_2)
-    a_star_average = sum(a_star_runtimes_2)/len(a_star_runtimes_2)
+    dijkstra_average = sum(dijkstra_runtimes)/len(dijkstra_runtimes)
+    a_star_average = sum(a_star_runtimes)/len(a_star_runtimes)
 
-    print(f"Dijkstra average ({LINE_TWO}): {dijkstra_average*1000}")
-    print(f"A* average ({LINE_TWO}): {a_star_average*1000}")
+    print(f"Dijkstra average: {dijkstra_average*1000}")
+    print(f"A* average: {a_star_average*1000}")
 
 def many_transfers_experiment(runs_per_step):
     # SOURCE_ID = '116' # Hatton Cross
@@ -420,7 +380,7 @@ def many_transfers_experiment(runs_per_step):
     print(f"A* average: {a_star_average}")
 
 if __name__ == "__main__":
-    # all_destinations_experiment(100)
+    all_destinations_experiment(100)
     one_line_experiment(500)
-    # adjacent_lines_experiment(500)
-    # many_transfers_experiment(500)
+    adjacent_lines_experiment(500)
+    many_transfers_experiment(500)
