@@ -1,9 +1,8 @@
 import min_heap
 import final_project_part1
 
-
 def a_star(g, s, d, h):
-    # g is a directed weighted graph from final_project_part1.py
+    # g is a directed weighted graph from part1_function.py
     # s is the source node
     # d is the destination node
     # h is the heuristic function in the form of a map from nodes to floats

@@ -23,8 +23,8 @@ def test_connections(num_nodes):
     return edges, connect_prob
 
 
-plt.title("Proportion of Edges vs. Connected Probability")
-plt.xlabel("Proportion of Edges")
+plt.title("Number of Edges vs. Connected Probability")
+plt.xlabel("Number of Edges")
 plt.ylabel("Connected Probability (%)")
 
 edges, connect = test_connections(20)
