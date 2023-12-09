@@ -17,10 +17,6 @@ def mystery_experiments(min_nodes, max_nodes, step):
 
     print("Sizes: ", sizes)
     print("Times: ", times)
-    log_sizes = np.log10(sizes)
-    log_times = np.log10(times)
-    print("Sizes: ", log_sizes)
-    print("Times: ", log_times)
     plt.loglog(sizes, times)
     plt.xlabel('Number of Nodes (log scale)')
     plt.ylabel('Execution Time (log scale)')
