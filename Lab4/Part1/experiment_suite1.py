@@ -1,7 +1,7 @@
 from shortestPathApprox import dijkstra_approx, bellman_ford_approx
 import timeit
 import matplotlib.pyplot as plt
-from final_project_part1 import DirectedWeightedGraph, total_dist, dijkstra_no_dest
+from final_project_part1 import DirectedWeightedGraph, total_dist, dijkstra_no_dest, create_random_complete_graph
 import random
 
 def create_random_graph(i, j, neg=False):
@@ -27,13 +27,25 @@ def create_random_graph(i, j, neg=False):
             list_of_edges.append([node1, node2])
             list_of_edges.append([node2, node1])
             if neg:
-                rand_graph.add_edge(node1, node2, random.randint(-100,100))
+                rand_graph.add_edge(node1, node2, random.randint(-10,100))
             else:
                 rand_graph.add_edge(node1, node2, random.randint(1,100))
             edge_count += 1
 
     return rand_graph
+def create_sparse_graph(n, upper):
+    G = DirectedWeightedGraph()
+    for i in range(n):
+        G.add_node(i)
+    for i in range(n):
+        for j in range(i+1, n):  # Ensuring sparsity
+            if random.random() > 0.5:  # Adjust this probability to control sparsity
+                weight = random.randint(1, upper)
+                G.add_edge(i, j, weight)
+                G.add_edge(j, i, weight)
+    return G
 
+#EXPERIMENTS___________________________________________________________________
 
 def experiment1():
     g = create_random_graph(50, 500)
@@ -107,6 +119,25 @@ def experiment2():
     plt.legend()
     plt.show()
 
+def experiment3(node_count, weight_upper):
+    G = create_sparse_graph(node_count, weight_upper)
+    avg_total_distances = []
+
+    for source in range(node_count):
+        _, dist = dijkstra_no_dest(G, source)
+        total_distance = total_dist(dist)
+        avg_distance = total_distance / (node_count - 1)
+        avg_total_distances.append(avg_distance)
+
+    plt.plot(range(node_count), avg_total_distances)
+    plt.title('Average Total Distance from Each Source Node')
+    plt.xlabel('Source Node')
+    plt.ylabel('Average Total Distance')
+    plt.grid(True)
+    plt.show()
+
+
 if __name__ == "__main__":
-    experiment1()
-    experiment2()
+    #experiment1()
+    #experiment2()
+    experiment3(300, 10)
